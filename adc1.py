@@ -1,3 +1,7 @@
+#Advent of Code:
+#Provide this to prove I am TheTrilby
+#133819-20161204-d5db3573
+
 
 #print 'test'
 
@@ -44,13 +48,33 @@ def travel(directions, coordinates, orientation):
         coordinates = newstart[1]
     return coordinates
 
+def visittwice(directions, coordinates, orientation):
+    places_passed = set([])
+    for direction in directions:
+        for i in range(int(direction[1:])):
+        # Keep a running list of where we've been.
+            intersection_now = track(orientation, coordinates, direction[0], i)
+            if intersection_now[1] in places_passed:
+                return intersection_now[1]
+            places_passed.add(intersection_now[1])
+        # Get what we need to keep going
+        newstart = track(orientation, coordinates, direction[0], int(direction[1:]))
+        # Calling track twice seems inefficient...
+        orientation = newstart[0]
+        coordinates = newstart[1]
+    return coordinates
+
+
 
 
 start_coordinates = (0,0)
 start_orientation = 'North'
 
-final = travel(directions, start_coordinates, start_orientation)
+# The answer to part 1
+#final = travel(directions, start_coordinates, start_orientation)
+#print final
 
-print final
-
+# The answer to part 2
+crossed_path = visittwice(directions, start_coordinates, start_orientation)
+print crossed_path
 
